@@ -1,6 +1,6 @@
 import './App.css';
 import Navigation from './components/Navigation';
-import BubbleSort from './components/BubbleSort';
+import BubbleSort from './components/Sorting/BubbleSort';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
