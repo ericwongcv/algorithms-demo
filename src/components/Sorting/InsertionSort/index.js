@@ -8,7 +8,7 @@ const InsertionSort = () => {
     const [sorted, setSorted] = useState(false);
     const [travelSpeed, setTravelSpeed] = useState(50);
 
-    const switchSpeed = travelSpeed * 1.5;
+    const switchSpeed = travelSpeed * 1.3;
 
     const color = {
         'blue' : '#2697d8',

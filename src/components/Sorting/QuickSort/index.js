@@ -8,12 +8,12 @@ const QuickSort = () => {
     const [sorted, setSorted] = useState(false);
     const [travelSpeed, setTravelSpeed] = useState(50);
 
-    const switchSpeed = travelSpeed * 1.5;
+    const switchSpeed = travelSpeed * 1.3;
 
     const color = {
         'blue': '#2697d8',
         'lightblue': 'lightblue',
-        'coral' : 'coral',
+        'coral': 'coral',
         'lightcoral': 'lightcoral'
     }
 
@@ -21,39 +21,88 @@ const QuickSort = () => {
         disableBtn(true);
         const arr = arrDisplay;
 
-        const sol = await partition(arr, 0, arr.length - 1);
-        
-        setArrDisplay(sol)
+        let end = arr.length - 1;
+        let start = 0;
+
+        const stack = [[start, end]];
+
+        while (stack.length > 0) {
+            const [start, end] = stack.pop();
+            const pivot = await partition(arr, start, end);
+
+            if (pivot - 1 > start)
+                stack.push([start, pivot - 1]);
+            if (pivot + 1 < end)
+                stack.push([pivot + 1, end]);
+
+        }
+
+        await timer(travelSpeed);
+
+        setArrDisplay(arr);
         disableBtn(false);
         setSorted(true);
     };
 
-    // Quick Sort Recursive
+    // Partition Function
     const partition = async (arr, start, end) => {
-        if (arr.length <= 1) return arr;
+        const [startBlock, endBlock] = domSelector([start, end]);
+        setColor(color.lightblue, endBlock, startBlock);
+        await timer(travelSpeed * 3);
+        setColor(color.coral, endBlock, startBlock);
+        await timer(travelSpeed * 3);
+
         let pivot = arr[end];
         let i = start - 1;
 
-        for (let j = 0; j < end; j++) {
+        for (let j = start; j < end; j++) {
+            const [currentBlock] = domSelector([j]);
+            setColor(color.blue, currentBlock);
+            await timer(travelSpeed);
+            currentBlock === startBlock ? setColor(color.coral, currentBlock) : setColor(color.lightblue, currentBlock);
 
             if (arr[j] < pivot) {
+                const [prevIdxBlock, switchBlock] = domSelector([i, i + 1]);
+                if (prevIdxBlock && prevIdxBlock !== startBlock) setColor(color.lightblue, prevIdxBlock);
+
                 i += 1;
 
+                setColor(color.lightcoral, currentBlock, switchBlock);
+                await timer(switchSpeed);
+
                 [arr[i], arr[j]] = [arr[j], arr[i]];
+
+                [currentBlock.innerHTML, switchBlock.innerHTML] = [arr[j], arr[i]];
+                await timer(switchSpeed);
+                setColor(color.lightblue, currentBlock);
+                if (switchBlock === startBlock) setColor(color.coral, switchBlock);
             }
         }
-        const finalBlock = document.getElementById(`${i + 1}`);
+
+        if (i >= 0) {
+            const [lastIdxBlock] = domSelector([i]);
+            setColor(color.lightblue, lastIdxBlock);
+        }
+        
+        const [pivotBlock] = domSelector([i + 1]);
+        setColor(color.lightcoral, endBlock, pivotBlock);
+        await timer(switchSpeed);
+
         [arr[i + 1], arr[end]] = [arr[end], arr[i + 1]];
 
-        const left = arr.slice(0, i + 1);
-        const right = arr.slice(i + 2);
+        [endBlock.innerHTML, pivotBlock.innerHTML] = [arr[end], arr[i + 1]];
+        await timer(switchSpeed);
+        setColor(color.lightblue, endBlock, pivotBlock, startBlock);
 
-        return [... await partition(left, 0, left.length - 1), arr[i + 1], ... await partition(right, 0, right.length - 1)];
+        return i + 1;
     }
 
-    const setColor = (color, el1, el2 = undefined) => {
-        el1.style.backgroundColor = color;
-        if (el2) el2.style.backgroundColor = color;
+    const setColor = (color, ...doms) => {
+        doms.forEach(dom => dom.style.backgroundColor = color);
+    }
+
+    const domSelector = (arr) => {
+        return arr.map(id => document.getElementById(`${id}`));
     }
 
     // Returns a Promise that resolves after "ms" Milliseconds
@@ -117,7 +166,7 @@ const QuickSort = () => {
                 <button id='run-btn' onClick={() => sort()}>Run</button>
                 <div className="slidecontainer">
                     <p className='note'>Speed Control:</p>
-                    <input id='speed-slider' type="range" min="5" max="1000" defaultValue={100} onChange={e => {
+                    <input id='speed-slider' type="range" min="5" max="205" defaultValue={100} onChange={e => {
                         setTravelSpeed(205 - e.target.value);
                     }}></input>
                 </div>
