@@ -2,14 +2,14 @@ import '../sort.css';
 import { useState } from 'react';
 import Node from '../../node';
 
-const BubbleSort = () => {
+const InsertionSort = () => {
     const btnArr = Array.from(Array(10).keys());
 
     const [arrDisplay, setArrDisplay] = useState([]);
     const [sorted, setSorted] = useState(false);
     const [travelSpeed, setTravelSpeed] = useState(50);
 
-    const switchSpeed = travelSpeed * 0.8;
+    const switchSpeed = travelSpeed * 1.5;
 
     const color = {
         'blue' : '#2697d8',
@@ -18,45 +18,44 @@ const BubbleSort = () => {
     }
 
     const sort = async () => {
-        let sorted = false;
-        const arr = arrDisplay.slice(0);
+        disableBtn(true);
+        const arr = arrDisplay;
 
-        while (!sorted) {
-            disableBtn(true);
-            sorted = true;
+        for (let i = 0; i < arr.length; i++) {
+            const currentBlock = document.getElementById(`${i}`);
+            setColor(color.blue, currentBlock);
 
-            for (let i = 0; i < arr.length - 1; i++) {
-                const currentBlock = document.getElementById(`${i}`);
-                const nextBlock = document.getElementById(`${i + 1}`);
-                setColor(currentBlock, nextBlock, color.blue);
+            await timer(switchSpeed);
 
+            let curIdx = i;
+
+            while (curIdx > 0 && arr[curIdx].val < arr[curIdx - 1].val) {
+                const holdingBlock = document.getElementById(`${curIdx}`);
+                const nextBlock = document.getElementById(`${curIdx-1}`);
+                setColor(color.blue, holdingBlock);
                 await timer(travelSpeed);
 
-                if (arr[i].val > arr[i + 1].val) {
+                [arr[curIdx].val, arr[curIdx - 1].val] = [arr[curIdx - 1].val, arr[curIdx].val];
 
-                    setColor(currentBlock, nextBlock, color.lightcoral);
+                holdingBlock.innerHTML = arr[curIdx].val;
+                nextBlock.innerHTML = arr[curIdx - 1].val;
 
-                    [arr[i].val, arr[i + 1].val] = [arr[i + 1].val, arr[i].val];
-
-                    await timer(switchSpeed);
-
-                    currentBlock.innerHTML = arr[i].val;
-                    nextBlock.innerHTML = arr[i + 1].val;
-
-                    await timer(switchSpeed);
-
-                    sorted = false;
-                }
-                setColor(currentBlock, nextBlock, color.lightblue);
+                setColor(color.lightblue, holdingBlock);
+                setColor(color.blue, nextBlock);
+                await timer(travelSpeed);
+                setColor(color.lightblue, nextBlock);
+                curIdx--;
             }
-            disableBtn(false)
+            setColor(color.lightblue, currentBlock);
         }
+
+        disableBtn(false);
         setSorted(true);
     };
 
-    const setColor = (el1, el2, color) => {
+    const setColor = (color, el1, el2 = undefined) => {
         el1.style.backgroundColor = color;
-        el2.style.backgroundColor = color;
+        if (el2) el2.style.backgroundColor = color;
     }
 
     // Returns a Promise that resolves after "ms" Milliseconds
@@ -72,7 +71,7 @@ const BubbleSort = () => {
         runButton.disabled = bool ? true : false;
     };
 
-    const genArray = () => {
+    const genArray = async () => {
         const newArray = [];
 
         for (let i = 0; i < 18; i++) {
@@ -80,6 +79,9 @@ const BubbleSort = () => {
             const node = new Node(random);
             newArray.push(node);
         }
+
+        setArrDisplay([]);
+        await timer(5);
         setArrDisplay(newArray);
         setSorted(false);
         return newArray;
@@ -87,7 +89,7 @@ const BubbleSort = () => {
 
     return (
         <center>
-            <h1><a href='https://en.wikipedia.org/wiki/Bubble_sort'>Bubble Sort</a></h1>
+            <h1><a href='https://en.wikipedia.org/wiki/Insertion_sort'>Insertion Sort</a></h1>
             <div className='alert-box'>
                 {arrDisplay.length === 0 &&
                     <p className="note">Click a few numbers below to get started!</p>
@@ -133,11 +135,11 @@ const BubbleSort = () => {
             </div>
             <div className='array'>
                 {arrDisplay.map((numNode, i) => (
-                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: numNode.color }} key={i}>{numNode.val}</div>
+                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightcoral }} key={i}>{numNode.val}</div>
                 ))}
             </div>
         </center>
     );
 }
 
-export default BubbleSort;
+export default InsertionSort;

@@ -12,8 +12,8 @@ const Navigation = (prop) => {
                     </button>
                     <div className="dropdown-content">
                         <NavLink to='/bubble-sort'>Bubble Sort</NavLink>
-                        <a href="#">Insertion Sort</a>
-                        <a href="#">Quick Sort</a>
+                        <NavLink to="/insertion-sort">Insertion Sort</NavLink>
+                        <NavLink to="/quick-sort">Quick Sort</NavLink>
                     </div>
                 </div>
                 <div className="dropdown">
@@ -21,9 +21,9 @@ const Navigation = (prop) => {
                         <i className="fa fa-caret-down"></i>
                     </button>
                     <div className="dropdown-content">
-                        <a href="#">Binary Search</a>
-                        <a href="#">Link 2</a>
-                        <a href="#">Link 3</a>
+                        <NavLink to='/binary-search'>Binary Search</NavLink>
+                        <NavLink to="/insertion-sort">Insertion Sort</NavLink>
+                        <NavLink to="/quick-sort">Quick Sort</NavLink>
                     </div>
                 </div>
             </div>
