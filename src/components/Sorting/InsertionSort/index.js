@@ -1,6 +1,5 @@
 import '../sort.css';
 import { useState } from 'react';
-import Node from '../../node';
 
 const InsertionSort = () => {
     const btnArr = Array.from(Array(10).keys());
@@ -29,16 +28,16 @@ const InsertionSort = () => {
 
             let curIdx = i;
 
-            while (curIdx > 0 && arr[curIdx].val < arr[curIdx - 1].val) {
+            while (curIdx > 0 && arr[curIdx] < arr[curIdx - 1]) {
                 const holdingBlock = document.getElementById(`${curIdx}`);
                 const nextBlock = document.getElementById(`${curIdx-1}`);
                 setColor(color.blue, holdingBlock);
                 await timer(travelSpeed);
 
-                [arr[curIdx].val, arr[curIdx - 1].val] = [arr[curIdx - 1].val, arr[curIdx].val];
+                [arr[curIdx], arr[curIdx - 1]] = [arr[curIdx - 1], arr[curIdx]];
 
-                holdingBlock.innerHTML = arr[curIdx].val;
-                nextBlock.innerHTML = arr[curIdx - 1].val;
+                holdingBlock.innerHTML = arr[curIdx];
+                nextBlock.innerHTML = arr[curIdx - 1];
 
                 setColor(color.lightblue, holdingBlock);
                 setColor(color.blue, nextBlock);
@@ -76,8 +75,7 @@ const InsertionSort = () => {
 
         for (let i = 0; i < 18; i++) {
             const random = Math.floor(Math.random() * 10);
-            const node = new Node(random);
-            newArray.push(node);
+            newArray.push(random);
         }
 
         setArrDisplay([]);
@@ -104,8 +102,7 @@ const InsertionSort = () => {
                         <button onClick={() => {
                             if (sorted) setSorted(false);
                             if (arrDisplay.length < 18) {
-                                const newNode = new Node(num);
-                                setArrDisplay([...arrDisplay, newNode]);
+                                setArrDisplay([...arrDisplay, num]);
                             }
                         }}>{num}</button>
                     </div>
@@ -134,8 +131,8 @@ const InsertionSort = () => {
                 }
             </div>
             <div className='array'>
-                {arrDisplay.map((numNode, i) => (
-                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightcoral }} key={i}>{numNode.val}</div>
+                {arrDisplay.map((num, i) => (
+                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightcoral }} key={i}>{num}</div>
                 ))}
             </div>
         </center>

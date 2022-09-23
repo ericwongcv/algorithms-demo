@@ -1,63 +1,59 @@
 import '../sort.css';
 import { useState } from 'react';
 
-const BubbleSort = () => {
+const QuickSort = () => {
     const btnArr = Array.from(Array(10).keys());
 
     const [arrDisplay, setArrDisplay] = useState([]);
     const [sorted, setSorted] = useState(false);
     const [travelSpeed, setTravelSpeed] = useState(50);
 
-    const switchSpeed = travelSpeed * 0.8;
+    const switchSpeed = travelSpeed * 1.5;
 
     const color = {
-        'blue' : '#2697d8',
-        'lightblue' : 'lightblue',
-        'lightcoral' : 'lightcoral'
+        'blue': '#2697d8',
+        'lightblue': 'lightblue',
+        'coral' : 'coral',
+        'lightcoral': 'lightcoral'
     }
 
     const sort = async () => {
-        let sorted = false;
-        const arr = arrDisplay.slice(0);
+        disableBtn(true);
+        const arr = arrDisplay;
 
-        while (!sorted) {
-            disableBtn(true);
-            sorted = true;
-
-            for (let i = 0; i < arr.length - 1; i++) {
-                const currentBlock = document.getElementById(`${i}`);
-                const nextBlock = document.getElementById(`${i + 1}`);
-                setColor(currentBlock, nextBlock, color.blue);
-
-                await timer(travelSpeed);
-
-                if (arr[i] > arr[i + 1]) {
-
-                    setColor(currentBlock, nextBlock, color.lightcoral);
-
-                    [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-
-                    await timer(switchSpeed);
-
-                    currentBlock.innerHTML = arr[i];
-                    nextBlock.innerHTML = arr[i + 1];
-
-                    await timer(switchSpeed);
-
-                    sorted = false;
-                }
-                setColor(currentBlock, nextBlock, color.lightblue);
-            }
-            disableBtn(false)
-        }
+        const sol = await partition(arr, 0, arr.length - 1);
         
-        setArrDisplay(arr);
+        setArrDisplay(sol)
+        disableBtn(false);
         setSorted(true);
     };
 
-    const setColor = (el1, el2, color) => {
+    // Quick Sort Recursive
+    const partition = async (arr, start, end) => {
+        if (arr.length <= 1) return arr;
+        let pivot = arr[end];
+        let i = start - 1;
+
+        for (let j = 0; j < end; j++) {
+
+            if (arr[j] < pivot) {
+                i += 1;
+
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+        const finalBlock = document.getElementById(`${i + 1}`);
+        [arr[i + 1], arr[end]] = [arr[end], arr[i + 1]];
+
+        const left = arr.slice(0, i + 1);
+        const right = arr.slice(i + 2);
+
+        return [... await partition(left, 0, left.length - 1), arr[i + 1], ... await partition(right, 0, right.length - 1)];
+    }
+
+    const setColor = (color, el1, el2 = undefined) => {
         el1.style.backgroundColor = color;
-        el2.style.backgroundColor = color;
+        if (el2) el2.style.backgroundColor = color;
     }
 
     // Returns a Promise that resolves after "ms" Milliseconds
@@ -73,13 +69,16 @@ const BubbleSort = () => {
         runButton.disabled = bool ? true : false;
     };
 
-    const genArray = () => {
+    const genArray = async () => {
         const newArray = [];
 
         for (let i = 0; i < 18; i++) {
             const random = Math.floor(Math.random() * 10);
             newArray.push(random);
         }
+
+        setArrDisplay([]);
+        await timer(5);
         setArrDisplay(newArray);
         setSorted(false);
         return newArray;
@@ -87,7 +86,7 @@ const BubbleSort = () => {
 
     return (
         <center>
-            <h1><a href='https://en.wikipedia.org/wiki/Bubble_sort'>Bubble Sort</a></h1>
+            <h1><a href='https://en.wikipedia.org/wiki/Quicksort'>Quick Sort</a></h1>
             <div className='alert-box'>
                 {arrDisplay.length === 0 &&
                     <p className="note">Click a few numbers below to get started!</p>
@@ -118,7 +117,7 @@ const BubbleSort = () => {
                 <button id='run-btn' onClick={() => sort()}>Run</button>
                 <div className="slidecontainer">
                     <p className='note'>Speed Control:</p>
-                    <input id='speed-slider' type="range" min="5" max="200" defaultValue={100} onChange={ e => {
+                    <input id='speed-slider' type="range" min="5" max="1000" defaultValue={100} onChange={e => {
                         setTravelSpeed(205 - e.target.value);
                     }}></input>
                 </div>
@@ -131,12 +130,12 @@ const BubbleSort = () => {
                 }
             </div>
             <div className='array'>
-                {arrDisplay.map((num, i) => (
-                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightblue }} key={i}>{num}</div>
+                {arrDisplay.map((numNode, i) => (
+                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightblue }} key={i}>{numNode}</div>
                 ))}
             </div>
         </center>
     );
 }
 
-export default BubbleSort;
+export default QuickSort;
