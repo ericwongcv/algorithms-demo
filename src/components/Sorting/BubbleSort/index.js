@@ -1,5 +1,6 @@
 import '../sort.css';
 import { useState } from 'react';
+import { text, button, color, setColor, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
 
 const BubbleSort = () => {
     const btnArr = Array.from(Array(10).keys());
@@ -10,30 +11,23 @@ const BubbleSort = () => {
 
     const switchSpeed = travelSpeed * 0.8;
 
-    const color = {
-        'blue' : '#2697d8',
-        'lightblue' : 'lightblue',
-        'lightcoral' : 'lightcoral'
-    }
-
     const sort = async () => {
         let sorted = false;
-        const arr = arrDisplay.slice(0);
+        const arr = arrDisplay;
 
         while (!sorted) {
             disableBtn(true);
             sorted = true;
 
             for (let i = 0; i < arr.length - 1; i++) {
-                const currentBlock = document.getElementById(`${i}`);
-                const nextBlock = document.getElementById(`${i + 1}`);
-                setColor(currentBlock, nextBlock, color.blue);
+                const [currentBlock, nextBlock] = domSelector([i, i + 1]);
+                setColor(color.blue, currentBlock, nextBlock);
 
                 await timer(travelSpeed);
 
                 if (arr[i] > arr[i + 1]) {
 
-                    setColor(currentBlock, nextBlock, color.lightcoral);
+                    setColor(color.lightcoral, currentBlock, nextBlock);
 
                     [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
 
@@ -46,54 +40,24 @@ const BubbleSort = () => {
 
                     sorted = false;
                 }
-                setColor(currentBlock, nextBlock, color.lightblue);
+                setColor(color.lightblue, currentBlock, nextBlock);
             }
             disableBtn(false)
         }
-        
+
         setArrDisplay(arr);
         setSorted(true);
     };
-
-    const setColor = (el1, el2, color) => {
-        el1.style.backgroundColor = color;
-        el2.style.backgroundColor = color;
-    }
-
-    // Returns a Promise that resolves after "ms" Milliseconds
-    const timer = ms => new Promise(res => setTimeout(res, ms))
-
-    const disableBtn = (bool) => {
-        const genArrayButton = document.getElementById('gen-array-btn');
-        const runButton = document.getElementById('run-btn');
-        const slider = document.getElementById('speed-slider');
-
-        slider.disabled = bool ? true : false;
-        genArrayButton.disabled = bool ? true : false;
-        runButton.disabled = bool ? true : false;
-    };
-
-    const genArray = () => {
-        const newArray = [];
-
-        for (let i = 0; i < 18; i++) {
-            const random = Math.floor(Math.random() * 10);
-            newArray.push(random);
-        }
-        setArrDisplay(newArray);
-        setSorted(false);
-        return newArray;
-    }
 
     return (
         <center>
             <h1><a href='https://en.wikipedia.org/wiki/Bubble_sort'>Bubble Sort</a></h1>
             <div className='alert-box'>
                 {arrDisplay.length === 0 &&
-                    <p className="note">Click a few numbers below to get started!</p>
+                    <p className="note">{text.start}</p>
                 }
                 {arrDisplay.length === 18 &&
-                    <p className="note">Max array capacity reached. Click "Run" to sort.</p>
+                    <p className="note">{text.capacity}</p>
                 }
             </div>
             <div className='buttons-grid'>
@@ -113,12 +77,16 @@ const BubbleSort = () => {
                     setArrDisplay([]);
                     setSorted(false);
                     disableBtn(false);
-                }}>Reset</button>
-                <button id='gen-array-btn' onClick={() => genArray()}>Generate Array</button>
-                <button id='run-btn' onClick={() => sort()}>Run</button>
+                }}>{button.reset}</button>
+                <button id='gen-array-btn' onClick={() => {
+                    const newArray = genArray();
+                    setArrDisplay(newArray);
+                    setSorted(false);
+                }}>{button.genArray}</button>
+                <button id='run-btn' onClick={() => sort()}>{button.run}</button>
                 <div className="slidecontainer">
-                    <p className='note'>Speed Control:</p>
-                    <input id='speed-slider' type="range" min="5" max="200" defaultValue={100} onChange={ e => {
+                    <p className='note'>{text.speed}</p>
+                    <input id='speed-slider' type="range" min="5" max="200" defaultValue={100} onChange={e => {
                         setTravelSpeed(205 - e.target.value);
                     }}></input>
                 </div>
@@ -126,13 +94,13 @@ const BubbleSort = () => {
             <div className='alert-box'>
                 {sorted && arrDisplay.length > 0 &&
                     <div>
-                        <p className="note">Array is sorted!</p>
+                        <p className="note">{text.sorted}</p>
                     </div>
                 }
             </div>
             <div className='array'>
                 {arrDisplay.map((num, i) => (
-                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightblue }} key={i}>{num}</div>
+                    <div className={'array-item'} id={`${i}`} key={i}>{num}</div>
                 ))}
             </div>
         </center>

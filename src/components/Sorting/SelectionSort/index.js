@@ -2,7 +2,7 @@ import '../sort.css';
 import { useState } from 'react';
 import { text, button, color, setColor, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
 
-const InsertionSort = () => {
+const SelectionSort = () => {
     const btnArr = Array.from(Array(10).keys());
 
     const [arrDisplay, setArrDisplay] = useState([]);
@@ -11,44 +11,63 @@ const InsertionSort = () => {
 
     const switchSpeed = travelSpeed * 1.3;
 
+
     const sort = async () => {
         disableBtn(true);
         const arr = arrDisplay;
 
-        for (let i = 0; i < arr.length; i++) {
-            const currentBlock = document.getElementById(`${i}`);
-            setColor(color.blue, currentBlock);
+        let [min, minIdx] = [arr[0], 0];
+        let i = 0;
 
+        while (i < arr.length) {
+            const [selectBlock] = domSelector([i]);
+            setColor(color.coral, selectBlock);
+            await timer(travelSpeed)
+
+            for (let j = i + 1; j < arr.length; j++) {
+                const [currentBlock] = domSelector([j]);
+                setColor(color.blue, currentBlock);
+                await timer(travelSpeed)
+                setColor(color.lightblue, currentBlock);
+
+                if (arr[j] < min) {
+                    const [prevMinBlock] = domSelector([minIdx]);
+                    if (minIdx > i) setColor(color.lightblue, prevMinBlock);
+
+                    [min, minIdx] = [arr[j], j];
+
+                    const [minBlock] = domSelector([minIdx])
+                    setColor(color.coral, minBlock);
+                    await timer(switchSpeed)
+                }
+            };
+
+            const [minBlock] = domSelector([minIdx]);
+            setColor(color.lightcoral, selectBlock, minBlock);
             await timer(switchSpeed);
 
-            let curIdx = i;
+            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+            
+            minBlock.innerHTML = arr[minIdx];
+            selectBlock.innerHTML = arr[i];
 
-            while (curIdx > 0 && arr[curIdx] < arr[curIdx - 1]) {
-                const [holdingBlock, nextBlock] = domSelector([curIdx, curIdx - 1]);
-                setColor(color.blue, holdingBlock);
-                await timer(travelSpeed);
+            await timer(switchSpeed);
+            setColor(color.lightblue, selectBlock);
+            if (i !== minIdx) setColor(color.lightblue, minBlock);
 
-                [arr[curIdx], arr[curIdx - 1]] = [arr[curIdx - 1], arr[curIdx]];
+            i++;
 
-                holdingBlock.innerHTML = arr[curIdx];
-                nextBlock.innerHTML = arr[curIdx - 1];
-
-                setColor(color.lightblue, holdingBlock);
-                setColor(color.blue, nextBlock);
-                await timer(travelSpeed);
-                setColor(color.lightblue, nextBlock);
-                curIdx--;
-            }
-            setColor(color.lightblue, currentBlock);
+            [min, minIdx] = [arr[i], i];
         }
 
+        setArrDisplay(arr);
         disableBtn(false);
         setSorted(true);
     };
 
     return (
         <center>
-            <h1><a href='https://en.wikipedia.org/wiki/Insertion_sort'>Insertion Sort</a></h1>
+            <h1><a href='https://en.wikipedia.org/wiki/Selection_sort'>Selection Sort</a></h1>
             <div className='alert-box'>
                 {arrDisplay.length === 0 &&
                     <p className="note">{text.start}</p>
@@ -76,8 +95,6 @@ const InsertionSort = () => {
                     disableBtn(false);
                 }}>{button.reset}</button>
                 <button id='gen-array-btn' onClick={async () => {
-                    setArrDisplay([]);
-                    await timer(1);
                     const newArray = genArray();
                     setArrDisplay(newArray);
                     setSorted(false);
@@ -99,11 +116,11 @@ const InsertionSort = () => {
             </div>
             <div className='array'>
                 {arrDisplay.map((num, i) => (
-                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightcoral }} key={i}>{num}</div>
+                    <div className={'array-item'} id={`${i}`} key={i}>{num}</div>
                 ))}
             </div>
         </center>
     );
 }
 
-export default InsertionSort;
+export default SelectionSort;

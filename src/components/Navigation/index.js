@@ -14,6 +14,7 @@ const Navigation = (prop) => {
                         <NavLink to='/bubble-sort'>Bubble Sort</NavLink>
                         <NavLink to="/insertion-sort">Insertion Sort</NavLink>
                         <NavLink to="/quick-sort">Quick Sort</NavLink>
+                        <NavLink to="/selection-sort">Selection Sort</NavLink>
                     </div>
                 </div>
                 <div className="dropdown">

@@ -1,5 +1,6 @@
 import '../sort.css';
 import { useState } from 'react';
+import { text, button, color, setColor, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
 
 const QuickSort = () => {
     const btnArr = Array.from(Array(10).keys());
@@ -9,13 +10,6 @@ const QuickSort = () => {
     const [travelSpeed, setTravelSpeed] = useState(50);
 
     const switchSpeed = travelSpeed * 1.3;
-
-    const color = {
-        'blue': '#2697d8',
-        'lightblue': 'lightblue',
-        'coral': 'coral',
-        'lightcoral': 'lightcoral'
-    }
 
     const sort = async () => {
         disableBtn(true);
@@ -48,9 +42,9 @@ const QuickSort = () => {
     const partition = async (arr, start, end) => {
         const [startBlock, endBlock] = domSelector([start, end]);
         setColor(color.lightblue, endBlock, startBlock);
-        await timer(travelSpeed * 3);
+        await timer(switchSpeed);
         setColor(color.coral, endBlock, startBlock);
-        await timer(travelSpeed * 3);
+        await timer(switchSpeed);
 
         let pivot = arr[end];
         let i = start - 1;
@@ -83,7 +77,7 @@ const QuickSort = () => {
             const [lastIdxBlock] = domSelector([i]);
             setColor(color.lightblue, lastIdxBlock);
         }
-        
+
         const [pivotBlock] = domSelector([i + 1]);
         setColor(color.lightcoral, endBlock, pivotBlock);
         await timer(switchSpeed);
@@ -97,51 +91,15 @@ const QuickSort = () => {
         return i + 1;
     }
 
-    const setColor = (color, ...doms) => {
-        doms.forEach(dom => dom.style.backgroundColor = color);
-    }
-
-    const domSelector = (arr) => {
-        return arr.map(id => document.getElementById(`${id}`));
-    }
-
-    // Returns a Promise that resolves after "ms" Milliseconds
-    const timer = ms => new Promise(res => setTimeout(res, ms))
-
-    const disableBtn = (bool) => {
-        const genArrayButton = document.getElementById('gen-array-btn');
-        const runButton = document.getElementById('run-btn');
-        const slider = document.getElementById('speed-slider');
-
-        slider.disabled = bool ? true : false;
-        genArrayButton.disabled = bool ? true : false;
-        runButton.disabled = bool ? true : false;
-    };
-
-    const genArray = async () => {
-        const newArray = [];
-
-        for (let i = 0; i < 18; i++) {
-            const random = Math.floor(Math.random() * 10);
-            newArray.push(random);
-        }
-
-        setArrDisplay([]);
-        await timer(5);
-        setArrDisplay(newArray);
-        setSorted(false);
-        return newArray;
-    }
-
     return (
         <center>
             <h1><a href='https://en.wikipedia.org/wiki/Quicksort'>Quick Sort</a></h1>
             <div className='alert-box'>
                 {arrDisplay.length === 0 &&
-                    <p className="note">Click a few numbers below to get started!</p>
+                    <p className="note">{text.start}</p>
                 }
                 {arrDisplay.length === 18 &&
-                    <p className="note">Max array capacity reached. Click "Run" to sort.</p>
+                    <p className="note">{text.capacity}</p>
                 }
             </div>
             <div className='buttons-grid'>
@@ -161,11 +119,15 @@ const QuickSort = () => {
                     setArrDisplay([]);
                     setSorted(false);
                     disableBtn(false);
-                }}>Reset</button>
-                <button id='gen-array-btn' onClick={() => genArray()}>Generate Array</button>
-                <button id='run-btn' onClick={() => sort()}>Run</button>
+                }}>{button.reset}</button>
+                <button id='gen-array-btn' onClick={() => {
+                    const newArray = genArray();
+                    setArrDisplay(newArray);
+                    setSorted(false);
+                }}>{button.genArray}</button>
+                <button id='run-btn' onClick={() => sort()}>{button.run}</button>
                 <div className="slidecontainer">
-                    <p className='note'>Speed Control:</p>
+                    <p className='note'>{text.speed}</p>
                     <input id='speed-slider' type="range" min="5" max="205" defaultValue={100} onChange={e => {
                         setTravelSpeed(205 - e.target.value);
                     }}></input>
@@ -174,13 +136,13 @@ const QuickSort = () => {
             <div className='alert-box'>
                 {sorted && arrDisplay.length > 0 &&
                     <div>
-                        <p className="note">Array is sorted!</p>
+                        <p className="note">{text.sorted}</p>
                     </div>
                 }
             </div>
             <div className='array'>
                 {arrDisplay.map((numNode, i) => (
-                    <div className={'array-item'} id={`${i}`} style={{ backgroundColor: color.lightblue }} key={i}>{numNode}</div>
+                    <div className={'array-item'} id={`${i}`} key={i}>{numNode}</div>
                 ))}
             </div>
         </center>
