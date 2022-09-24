@@ -50,6 +50,11 @@ h1 a {
     cursor: pointer;
 }
 
+.buttons-grid-item>button:disabled {
+    border-color: gray;
+    cursor: pointer;
+}
+
 .run-reset button {
     display: inline-block;
     padding: 10px 20px;
@@ -64,7 +69,6 @@ h1 a {
     background-color: #2697d8;
     text-align: center;
     transition: all 0.2s;
-
 }
 
 .run-reset button:hover {
@@ -73,10 +77,35 @@ h1 a {
     cursor: pointer;
 }
 
+.run-reset button:disabled {
+    background-color: lightskyblue;
+}
+
 .note {
     font-size: 20px;
 }
 
 .slidecontainer {
     width: 100%;
+}
+
+@media only screen and (max-width: 1200px) {
+    .array {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        width: 350px;
+    }
+    
+    .array-item {
+        flex-wrap: wrap;
+        margin: 2px;
+        padding: 3px;
+        font-size: 30px;
+    }
+
+    .run-reset button {
+        padding: 10px 15px;
+        margin: 10px;
+        font-size: 16px;
+    }
 }

@@ -1,14 +1,14 @@
 export const text = {
-    'start' : 'Click a few numbers below to get started!',
-    'capacity' : 'Max array capacity reached. Click "Run" to sort.',
-    'speed' : 'Speed Control:',
-    'sorted' : 'Array is sorted!'
+    'start': 'Click a few numbers below to get started!',
+    'capacity': 'Max array capacity reached. Click "Run" to sort.',
+    'speed': 'Speed Control:',
+    'sorted': 'Array is sorted!'
 }
 
 export const button = {
-    'reset' : 'Reset',
-    'genArray' : 'Generate Array',
-    'run' : 'Run'
+    'reset': 'Reset',
+    'genArray': 'Generate Array',
+    'run': 'Run'
 }
 
 export const color = {
@@ -30,11 +30,13 @@ export const domSelector = (arr) => {
 export const timer = ms => new Promise(res => setTimeout(res, ms))
 
 export const disableBtn = (bool) => {
-    const [genArrayButton, runButton, slider] = domSelector(['gen-array-btn', 'run-btn', 'speed-slider'])
-
-    slider.disabled = bool ? true : false;
-    genArrayButton.disabled = bool ? true : false;
-    runButton.disabled = bool ? true : false;
+    const elements = domSelector(['gen-array-btn', 'run-btn', 'speed-slider']);
+    const digits = document.getElementsByClassName('num-button');
+    
+    for (let i = 0; i < digits.length; i++)
+        digits[i].disabled = bool ? true : false;
+        
+    elements.forEach(btn => btn.disabled = bool ? true : false);
 };
 
 export const genArray = () => {

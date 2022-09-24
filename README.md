@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Algorithms Demo
+
+This project is to demonstrate various sorting and searching algorithms.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

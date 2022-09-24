@@ -79,7 +79,7 @@ const SelectionSort = () => {
             <div className='buttons-grid'>
                 {btnArr.map(num => (
                     <div className='buttons-grid-item' key={num}>
-                        <button onClick={() => {
+                        <button className='num-button' onClick={() => {
                             if (sorted) setSorted(false);
                             if (arrDisplay.length < 18) {
                                 setArrDisplay([...arrDisplay, num]);
