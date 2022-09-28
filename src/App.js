@@ -18,6 +18,10 @@ function App() {
         <Route path='/merge-sort' element={<MergeSort />} />
         <Route path='/quick-sort' element={<QuickSort />} />
         <Route path='/selection-sort' element={<SelectionSort />} />
+
+        {/* <Route path='/binary-search' element={<BinarySearch />} />
+        <Route path='/linear-search' element={<LinearSearch />} /> */}
+
         <Route path='*' element={
           <h1>Welcome to Algorithms Demo</h1>
         } />

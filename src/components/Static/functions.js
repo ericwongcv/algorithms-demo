@@ -22,12 +22,23 @@ export const setColor = (color, ...doms) => {
     doms.forEach(dom => dom.style.backgroundColor = color);
 }
 
+// Used for merge sort
+export const arrColorSwitch = function(start, end, color) {
+    let i = start;
+    while (i <= end) {
+        const [dom] = domSelector([i]);
+        setColor(color, dom);
+        i++;
+    };
+};
+
 export const domSelector = (arr) => {
     return arr.map(id => document.getElementById(`${id}`));
 }
 
 // Returns a Promise that resolves after "ms" Milliseconds
 export const timer = ms => new Promise(res => setTimeout(res, ms))
+
 
 export const disableBtn = (bool) => {
     const elements = domSelector(['gen-array-btn', 'run-btn', 'speed-slider']);

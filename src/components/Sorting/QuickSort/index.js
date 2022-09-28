@@ -76,7 +76,7 @@ const QuickSort = () => {
         if (i >= 0) {
             const [lastIdxBlock] = domSelector([i]);
             setColor(color.lightblue, lastIdxBlock);
-        }
+        };
 
         const [pivotBlock] = domSelector([i + 1]);
         setColor(color.lightcoral, endBlock, pivotBlock);
@@ -89,7 +89,7 @@ const QuickSort = () => {
         setColor(color.lightblue, endBlock, pivotBlock, startBlock);
 
         return i + 1;
-    }
+    };
 
     return (
         <center>
@@ -147,6 +147,6 @@ const QuickSort = () => {
             </div>
         </center>
     );
-}
+};
 
 export default QuickSort;

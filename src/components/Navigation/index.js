@@ -7,7 +7,7 @@ const Navigation = (prop) => {
             <div className="navbar">
                 <NavLink to='/home'>Home</NavLink>
                 <div className="dropdown">
-                    <button className="dropbtn">Sorting Algorithms
+                    <button className="dropbtn">Sorting
                         <i className="fa fa-caret-down"></i>
                     </button>
                     <div className="dropdown-content">
@@ -19,13 +19,12 @@ const Navigation = (prop) => {
                     </div>
                 </div>
                 <div className="dropdown">
-                    <button className="dropbtn">Search Algorithms
+                    <button className="dropbtn">Searching
                         <i className="fa fa-caret-down"></i>
                     </button>
                     <div className="dropdown-content">
                         <NavLink to='/binary-search'>Binary Search</NavLink>
-                        <NavLink to="/insertion-sort">Insertion Sort</NavLink>
-                        <NavLink to="/quick-sort">Quick Sort</NavLink>
+                        <NavLink to="/linear-search">Linear Search</NavLink>
                     </div>
                 </div>
             </div>

@@ -4,13 +4,15 @@ h1 {
 
 h1 a {
     text-decoration: none;
-    color: #282c34;
+    color: #2E382E;
 }
 
 .alert-box {
-    color: white;
+    color: #72A1E5;
     height: 30px;
     margin: 50px;
+    /* text-shadow: 1px 1px lightblue; */
+    font-weight: bold;
 }
 
 .array {
@@ -23,9 +25,10 @@ h1 a {
     margin: 0 5px;
     padding: 15px;
     min-width: 20px;
+    min-height: 35px;
     font-size: 30px;
     background-color: lightblue;
-    border: 1px solid black;
+    border: 1px solid #2E382E;
     border-radius: 5px;
 }
 
@@ -38,7 +41,7 @@ h1 a {
 
 .buttons-grid-item>button {
     background-color: rgba(255, 255, 255, 0.8);
-    border: 2px solid black;
+    border: 2px solid #2E382E;
     border-radius: 50%;
     padding: 15px 20px;
     font-size: 20px;
@@ -73,7 +76,7 @@ h1 a {
 
 .run-reset button:hover {
     background-color: lightskyblue;
-    color: black;
+    color: #2E382E;
     cursor: pointer;
 }
 

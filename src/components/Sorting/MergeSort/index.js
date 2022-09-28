@@ -1,6 +1,6 @@
 import '../sort.css';
 import { useState } from 'react';
-import { text, button, color, setColor, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
+import { text, button, color, setColor, arrColorSwitch, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
 
 const MergeSort = () => {
     const btnArr = Array.from(Array(10).keys());
@@ -11,58 +11,94 @@ const MergeSort = () => {
 
     const switchSpeed = travelSpeed * 1.3;
 
-
     const sort = async () => {
         disableBtn(true);
         const arr = arrDisplay;
 
-        let [min, minIdx] = [arr[0], 0];
-        let i = 0;
+        let width = 1;
+        let n = arr.length;
 
-        while (i < arr.length) {
-            const [selectBlock] = domSelector([i]);
-            setColor(color.coral, selectBlock);
-            await timer(travelSpeed)
+        while (width < n) {
+            let l = 0;
+            while (l < n) {
+                const r = Math.min(l + (width * 2 - 1), n - 1);
+                const m = Math.min(l + width - 1, n - 1);
 
-            for (let j = i + 1; j < arr.length; j++) {
-                const [currentBlock] = domSelector([j]);
-                setColor(color.blue, currentBlock);
-                await timer(travelSpeed)
-                setColor(color.lightblue, currentBlock);
-
-                if (arr[j] < min) {
-                    const [prevMinBlock] = domSelector([minIdx]);
-                    if (minIdx > i) setColor(color.lightblue, prevMinBlock);
-
-                    [min, minIdx] = [arr[j], j];
-
-                    const [minBlock] = domSelector([minIdx])
-                    setColor(color.coral, minBlock);
-                    await timer(switchSpeed)
-                }
-            };
-
-            const [minBlock] = domSelector([minIdx]);
-            setColor(color.lightcoral, selectBlock, minBlock);
-            await timer(switchSpeed);
-
-            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
-            
-            minBlock.innerHTML = arr[minIdx];
-            selectBlock.innerHTML = arr[i];
-
-            await timer(switchSpeed);
-            setColor(color.lightblue, selectBlock);
-            if (i !== minIdx) setColor(color.lightblue, minBlock);
-
-            i++;
-
-            [min, minIdx] = [arr[i], i];
+                arrColorSwitch(l, r, color.blue);
+                await timer(travelSpeed);
+                arrTextClear(l, r)
+                
+                await merge(arr, l, m, r);
+                l += width * 2;
+            }
+            width *= 2;
         }
-
+        
         setArrDisplay(arr);
         disableBtn(false);
         setSorted(true);
+    };
+
+    // Merge Function
+    const merge = async (arr, l, m, r) => {
+        const n1 = m - l + 1;
+        const n2 = r - m;
+
+        const leftArr = [];
+        const rightArr = [];
+
+        for (let i = 0; i < n1; i++)
+            leftArr.push(arr[l + i]);
+        for (let i = 0; i < n2; i++)
+            rightArr.push(arr[m + i + 1]);
+
+        let [i, j, k] = [0, 0, l];
+        while (i < n1 && j < n2) {
+            if (leftArr[i] <= rightArr[j]) {
+                arr[k] = leftArr[i];
+                i++;
+            } else {
+                arr[k] = rightArr[j];
+                j++;
+            }
+            await setTargetValue(arr, k);
+
+            k++;
+        };
+
+        while (i < n1) {
+            arr[k] = leftArr[i];
+            await setTargetValue(arr, k);
+            i++;
+            k++;
+        };
+
+        while (j < n2) {
+            arr[k] = rightArr[j];
+            await setTargetValue(arr, k);
+            j++;
+            k++;
+        };
+    };
+
+    // Clears text from start to end
+    const arrTextClear = function(start, end) {
+        let i = start;
+        while (i <= end) {
+            const [dom] = domSelector([i]);
+            dom.innerHTML = '';
+            i++;
+        };
+    };
+
+    // Changes color and value of selected block in array
+    const setTargetValue = async function(arr, k) {
+        const [targetBlock] = domSelector([k]);
+        await timer(switchSpeed / 3);
+        setColor(color.lightcoral, targetBlock);
+        targetBlock.innerHTML = arr[k];
+        await timer(switchSpeed);
+        setColor(color.lightblue, targetBlock);
     };
 
     return (

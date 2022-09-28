@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body {
-  background-color: lightslategrey;
-  color: #282c34;
+  background-color: #BAD4AA;
+  color: #2E382E;
+  font-family: 'Roboto', sans-serif;
 }
 
 .App {
