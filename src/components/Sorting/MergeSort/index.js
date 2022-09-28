@@ -94,7 +94,7 @@ const MergeSort = () => {
     // Changes color and value of selected block in array
     const setTargetValue = async function(arr, k) {
         const [targetBlock] = domSelector([k]);
-        await timer(switchSpeed / 3);
+        await timer(switchSpeed);
         setColor(color.lightcoral, targetBlock);
         targetBlock.innerHTML = arr[k];
         await timer(switchSpeed);
