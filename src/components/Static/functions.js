@@ -1,8 +1,12 @@
 export const text = {
     'start': 'Click a few numbers below to get started!',
     'capacity': 'Max array capacity reached. Click "Run" to sort.',
+    'capacitySearch': 'Max array capacity reached. Click "Run" to search.',
     'speed': 'Speed Control:',
-    'sorted': 'Array is sorted!'
+    'sorted': 'Array is sorted!',
+    'found': 'Value found on index: ',
+    'notFound': 'Value not found.',
+    'selectNum': 'Select a digit to search for.'
 }
 
 export const button = {
@@ -15,7 +19,8 @@ export const color = {
     'blue': '#2697d8',
     'lightblue': 'lightblue',
     'coral': 'coral',
-    'lightcoral': 'lightcoral'
+    'lightcoral': 'lightcoral',
+    'white': 'rgba(255, 255, 255, 0.8)'
 }
 
 export const setColor = (color, ...doms) => {
@@ -46,6 +51,12 @@ export const disableBtn = (bool) => {
     
     for (let i = 0; i < digits.length; i++)
         digits[i].disabled = bool ? true : false;
+        
+    elements.forEach(btn => btn.disabled = bool ? true : false);
+};
+
+export const disableRunStartBtn = (bool) => {
+    const elements = domSelector(['gen-array-btn', 'run-btn', 'speed-slider']);
         
     elements.forEach(btn => btn.disabled = bool ? true : false);
 };

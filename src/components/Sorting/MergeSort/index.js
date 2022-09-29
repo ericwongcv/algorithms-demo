@@ -1,4 +1,4 @@
-import '../sort.css';
+import '../../Static/algorithms.css';
 import { useState } from 'react';
 import { text, button, color, setColor, arrColorSwitch, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
 

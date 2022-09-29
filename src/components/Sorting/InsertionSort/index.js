@@ -1,4 +1,4 @@
-import '../sort.css';
+import '../../Static/algorithms.css';
 import { useState } from 'react';
 import { text, button, color, setColor, domSelector, timer, disableBtn, genArray } from '../../Static/functions';
 
@@ -18,7 +18,6 @@ const InsertionSort = () => {
         for (let i = 0; i < arr.length; i++) {
             const currentBlock = document.getElementById(`${i}`);
             setColor(color.blue, currentBlock);
-
             await timer(switchSpeed);
 
             let curIdx = i;
