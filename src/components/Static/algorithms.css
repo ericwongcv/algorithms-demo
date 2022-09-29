@@ -102,15 +102,15 @@ h1 a {
 
 @media only screen and (max-width: 1200px) {
     .array {
-        display: grid;
-        grid-template-columns: repeat(9, 1fr);
-        width: 600px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 570px;
     }
 
     .array-item {
         flex-wrap: wrap;
         margin: 5px;
-        padding: 5px;
+        padding: 15px;
         font-size: 30px;
     }
 
@@ -122,16 +122,16 @@ h1 a {
 
 @media only screen and (max-width: 800px) {
     .array {
-        display: grid;
-        grid-template-columns: repeat(9, 1fr);
-        width: 350px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 370px;
     }
 
     .array-item {
         flex-wrap: wrap;
         min-width: 20px;
         margin: 3px;
-        padding: 5px;
+        padding: 6px;
         font-size: 30px;
     }
 

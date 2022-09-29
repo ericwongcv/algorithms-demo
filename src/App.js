@@ -1,5 +1,6 @@
 import './App.css';
 import Navigation from './components/Navigation';
+import HomePage from './components/HomePage';
 import BubbleSort from './components/Sorting/BubbleSort';
 import InsertionSort from './components/Sorting/InsertionSort';
 import MergeSort from './components/Sorting/MergeSort';
@@ -24,9 +25,7 @@ function App() {
         <Route path='/binary-search' element={<BinarySearch />} />
         <Route path='/linear-search' element={<LinearSearch />} />
 
-        <Route path='*' element={
-          <h1>Welcome to Algorithms Demo</h1>
-        } />
+        <Route path='*' element={<HomePage />} />
       </Routes>
     </div>
   );
